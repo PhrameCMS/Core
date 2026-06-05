@@ -99,7 +99,15 @@ If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer Symfony 
 
 ## Symfony HttpFoundation Bridge
 
-Core remains framework-neutral at plugin boundaries. `symfony/http-foundation` is included as a core dependency, and `public/index.php` uses the bridge to capture globals and emit responses.
+Core remains framework-neutral at plugin boundaries. Symfony HttpFoundation support is now provided as an optional package.
+
+Install the bridge package when you want Symfony transport behavior:
+
+```bash
+composer require phramecms/http-foundation-bridge:*
+```
+
+The bridge package depends on `symfony/http-foundation` and converts between Symfony request/response objects and core transport types.
 
 The bridge layer keeps a swap seam for the future: plugin contracts still use `PhrameCMS\Core\Http\Request` and `PhrameCMS\Core\Http\Response`, not Symfony types.
 

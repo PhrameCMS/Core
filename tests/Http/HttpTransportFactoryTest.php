@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use PhrameCMS\Core\Contracts\HttpTransportInterface;
-use PhrameCMS\Core\Http\HttpFoundationBridge;
 use PhrameCMS\Core\Http\HttpTransportFactory;
 use PhrameCMS\Core\Http\NativeHttpTransport;
 use PhrameCMS\Core\Http\Request;
@@ -41,8 +40,11 @@ final class HttpTransportFactoryTest extends TestCase
 
         $transport = HttpTransportFactory::createDefault();
 
-        if (HttpFoundationBridge::isAvailable()) {
-            self::assertInstanceOf(HttpFoundationBridge::class, $transport);
+        if (self::isSymfonyBridgeInstalled()) {
+            self::assertContains($transport::class, [
+                'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge',
+                'PhrameCMS\\Core\\Http\\HttpFoundationBridge',
+            ]);
 
             return;
         }
@@ -75,6 +77,21 @@ final class HttpTransportFactoryTest extends TestCase
         putenv('PHRAME_HTTP_TRANSPORT=CustomTransportForFactoryTest');
 
         self::assertInstanceOf(CustomTransportForFactoryTest::class, HttpTransportFactory::createDefault());
+    }
+
+    private static function isSymfonyBridgeInstalled(): bool
+    {
+        $packageBridge = 'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge';
+        if (class_exists($packageBridge) && method_exists($packageBridge, 'isAvailable')) {
+            return $packageBridge::isAvailable();
+        }
+
+        $coreBridge = 'PhrameCMS\\Core\\Http\\HttpFoundationBridge';
+        if (class_exists($coreBridge) && method_exists($coreBridge, 'isAvailable')) {
+            return $coreBridge::isAvailable();
+        }
+
+        return false;
     }
 }
 

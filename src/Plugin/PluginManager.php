@@ -38,7 +38,7 @@ final class PluginManager
                     continue;
                 }
 
-                $pluginMeta = $extra['phramecms'] ?? $extra['lume'] ?? null;
+                $pluginMeta = $extra['phramecms'] ?? null;
                 if (!is_array($pluginMeta)) {
                     continue;
                 }

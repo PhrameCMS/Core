@@ -10,6 +10,14 @@ use Throwable;
 
 final class HttpTransportFactory
 {
+    /**
+     * @var list<class-string>
+     */
+    private const SYMFONY_BRIDGE_CANDIDATES = [
+        'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge',
+        'PhrameCMS\\Core\\Http\\HttpFoundationBridge',
+    ];
+
     public static function createDefault(): HttpTransportInterface
     {
         $configured = trim((string) (getenv('PHRAME_HTTP_TRANSPORT') ?: ''));
@@ -18,8 +26,9 @@ final class HttpTransportFactory
             return self::fromConfiguration($configured);
         }
 
-        if (HttpFoundationBridge::isAvailable()) {
-            return new HttpFoundationBridge();
+        $transport = self::createSymfonyBridgeTransport();
+        if ($transport !== null) {
+            return $transport;
         }
 
         return new NativeHttpTransport();
@@ -34,8 +43,9 @@ final class HttpTransportFactory
         }
 
         if ($mode === HttpTransportMode::Symfony) {
-            if (HttpFoundationBridge::isAvailable()) {
-                return new HttpFoundationBridge();
+            $transport = self::createSymfonyBridgeTransport();
+            if ($transport !== null) {
+                return $transport;
             }
 
             return new NativeHttpTransport();
@@ -67,5 +77,30 @@ final class HttpTransportFactory
         }
 
         return $transport;
+    }
+
+    private static function createSymfonyBridgeTransport(): ?HttpTransportInterface
+    {
+        foreach (self::SYMFONY_BRIDGE_CANDIDATES as $bridgeClass) {
+            if (!class_exists($bridgeClass)) {
+                continue;
+            }
+
+            if (!is_subclass_of($bridgeClass, HttpTransportInterface::class)) {
+                continue;
+            }
+
+            if (!method_exists($bridgeClass, 'isAvailable')) {
+                continue;
+            }
+
+            if (!$bridgeClass::isAvailable()) {
+                continue;
+            }
+
+            return new $bridgeClass();
+        }
+
+        return null;
     }
 }
