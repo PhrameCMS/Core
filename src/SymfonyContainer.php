@@ -14,11 +14,6 @@ final class SymfonyContainer implements ContainerBuilderInterface
     private const CONTAINER_BUILDER_CLASS = 'Symfony\\Component\\DependencyInjection\\ContainerBuilder';
 
     /**
-     * @var object
-     */
-    private object $container;
-
-    /**
      * @var array<string, array{concrete:mixed, shared:bool}>
      */
     private array $definitions = [];
@@ -43,9 +38,6 @@ final class SymfonyContainer implements ContainerBuilderInterface
         if (!self::isAvailable()) {
             throw new RuntimeException('Symfony DependencyInjection component is not available.');
         }
-
-        $containerClass = self::CONTAINER_BUILDER_CLASS;
-        $this->container = new $containerClass();
     }
 
     public static function isAvailable(): bool

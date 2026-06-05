@@ -8,7 +8,10 @@ use PhrameCMS\Core\Http\Request;
 
 final class RequestTest extends TestCase
 {
+    /** @var array<mixed, mixed> */
     private array $serverBackup;
+
+    /** @var array<mixed, mixed> */
     private array $getBackup;
 
     protected function setUp(): void

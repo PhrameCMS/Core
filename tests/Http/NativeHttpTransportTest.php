@@ -9,7 +9,10 @@ use PhrameCMS\Core\Http\Response;
 
 final class NativeHttpTransportTest extends TestCase
 {
+    /** @var array<mixed, mixed> */
     private array $serverBackup;
+
+    /** @var array<mixed, mixed> */
     private array $getBackup;
 
     protected function setUp(): void
@@ -43,8 +46,7 @@ final class NativeHttpTransportTest extends TestCase
 
         ob_start();
         $transport->emitResponse(new Response(200, 'ok'));
-        ob_end_clean();
 
-        self::assertTrue(true);
+        self::assertSame('ok', (string) ob_get_clean());
     }
 }

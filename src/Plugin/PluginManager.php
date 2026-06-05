@@ -12,7 +12,7 @@ final class PluginManager
     public function discover(): array
     {
         $installedVersionsClass = 'Composer\\InstalledVersions';
-        if (!class_exists($installedVersionsClass) || !method_exists($installedVersionsClass, 'getAllRawData')) {
+        if (!class_exists($installedVersionsClass)) {
             return [];
         }
 

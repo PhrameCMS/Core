@@ -49,6 +49,7 @@ final class Application
         $plugins = $this->pluginManager->discover();
         $this->container->set('plugins', $plugins);
 
+        /** @var CapabilityRegistry $capabilityRegistry */
         $capabilityRegistry = $this->container->get(CapabilityRegistry::class);
         foreach ($plugins as $plugin) {
             $capabilityRegistry->addMany($plugin->capabilities);
@@ -92,10 +93,15 @@ final class Application
     private function registerCoreRoutes(): void
     {
         $this->routes[] = Route::create(HttpMethod::GET, '/health', function (): Response {
+            $version = $this->container->get('core.version');
+            if (!is_string($version)) {
+                throw new RuntimeException('Core version must be a string.');
+            }
+
             return Response::json([
                 'status' => 'ok',
                 'service' => 'phramecms-core',
-                'version' => (string) $this->container->get('core.version'),
+                'version' => $version,
             ]);
         });
 

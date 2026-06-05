@@ -16,6 +16,9 @@ final class Response
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     public static function json(array $payload, int $status = 200): self
     {
         $encoded = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

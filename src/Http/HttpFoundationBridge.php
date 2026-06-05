@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace PhrameCMS\Core\Http;
 
 use PhrameCMS\Core\Contracts\HttpTransportInterface;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 final class HttpFoundationBridge implements HttpTransportInterface
 {
-    private const SYMFONY_REQUEST = 'Symfony\\Component\\HttpFoundation\\Request';
-    private const SYMFONY_RESPONSE = 'Symfony\\Component\\HttpFoundation\\Response';
-
     public static function isAvailable(): bool
     {
-        return class_exists(self::SYMFONY_REQUEST) && class_exists(self::SYMFONY_RESPONSE);
+        return class_exists(SymfonyRequest::class) && class_exists(SymfonyResponse::class);
     }
 
     public static function requestFromGlobals(): Request
@@ -28,12 +27,7 @@ final class HttpFoundationBridge implements HttpTransportInterface
 
     public function captureRequest(): Request
     {
-        $requestClass = self::SYMFONY_REQUEST;
-
-        /** @var object $request */
-        $request = $requestClass::createFromGlobals();
-
-        return self::toCoreRequest($request);
+        return self::toCoreRequest(SymfonyRequest::createFromGlobals());
     }
 
     public function emitResponse(Response $response): void
@@ -41,18 +35,16 @@ final class HttpFoundationBridge implements HttpTransportInterface
         self::toSymfonyResponse($response)->send();
     }
 
-    private static function toCoreRequest(object $request): Request
+    private static function toCoreRequest(SymfonyRequest $request): Request
     {
-        if (!method_exists($request, 'getContent') || !method_exists($request, 'getMethod') || !method_exists($request, 'getPathInfo')) {
-            throw new \RuntimeException('Invalid Symfony Request instance.');
-        }
-
         $body = $request->getContent();
+        /** @var array<mixed, mixed>|null $jsonBody */
         $jsonBody = null;
 
         if ($body !== '') {
             $decoded = json_decode($body, true);
-            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            if (json_last_error() === JSON_ERROR_NONE) {
+                /** @var array<mixed, mixed> $decoded */
                 $jsonBody = $decoded;
             }
         }
@@ -72,11 +64,9 @@ final class HttpFoundationBridge implements HttpTransportInterface
         );
     }
 
-    private static function toSymfonyResponse(Response $response): object
+    private static function toSymfonyResponse(Response $response): SymfonyResponse
     {
-        $responseClass = self::SYMFONY_RESPONSE;
-
-        return new $responseClass(
+        return new SymfonyResponse(
             $response->body(),
             $response->status(),
             $response->headers(),

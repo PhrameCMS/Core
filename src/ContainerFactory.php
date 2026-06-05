@@ -78,23 +78,13 @@ final class ContainerFactory
         $adapterClass = self::SYMFONY_ADAPTER_CLASS;
 
         return class_exists($adapterClass)
-            && method_exists($adapterClass, 'isAvailable')
             && $adapterClass::isAvailable();
     }
 
     private static function createSymfonyAdapter(): ContainerBuilderInterface
     {
         $adapterClass = self::SYMFONY_ADAPTER_CLASS;
-        $adapter = new $adapterClass();
 
-        if (!$adapter instanceof ContainerBuilderInterface) {
-            throw new RuntimeException(sprintf(
-                'Invalid Symfony adapter "%s": class must implement %s.',
-                $adapterClass,
-                ContainerBuilderInterface::class,
-            ));
-        }
-
-        return $adapter;
+        return new $adapterClass();
     }
 }

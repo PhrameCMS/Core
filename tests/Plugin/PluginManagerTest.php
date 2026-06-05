@@ -13,7 +13,7 @@ final class PluginManagerTest extends TestCase
         $manager = new PluginManager();
         $definitions = $manager->discover();
 
-        self::assertIsArray($definitions);
+        self::assertGreaterThanOrEqual(0, count($definitions));
 
         foreach ($definitions as $definition) {
             self::assertInstanceOf(PluginDefinition::class, $definition);
