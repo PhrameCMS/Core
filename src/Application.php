@@ -35,7 +35,7 @@ final class Application
 
     public static function bootFromComposer(): self
     {
-        $app = new self(new CoreContainer(), new PluginManager());
+        $app = new self(ContainerFactory::createDefault(), new PluginManager());
         $app->bootstrap();
 
         return $app;

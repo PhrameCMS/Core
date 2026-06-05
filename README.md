@@ -82,6 +82,21 @@ To contribute routes, register a route provider class and tag it as `route.provi
 - This repository currently contains one reference plugin package in `packages/wysiwyg`.
 - The reference plugin is optional and is not part of core runtime logic.
 
+## Dependency Injection Engine
+
+Core resolves its container through `ContainerFactory`, with all runtime/plugin code targeting `PhrameCMS\Core\Contracts\ContainerBuilderInterface`.
+
+You can override container engine selection with `PHRAME_CONTAINER`:
+
+- `native`: force core native container.
+- `symfony`: force Symfony DependencyInjection-backed adapter (fails if unavailable).
+- aliases `symfony-di` and `dependency-injection` are also supported.
+- `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\ContainerBuilderInterface`.
+
+Invalid custom class values are fail-fast: startup throws a runtime exception if the class does not exist, cannot be instantiated, or does not implement `ContainerBuilderInterface`.
+
+If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer Symfony adapter when available, otherwise use native container.
+
 ## Symfony HttpFoundation Bridge
 
 Core remains framework-neutral at plugin boundaries. `symfony/http-foundation` is included as a core dependency, and `public/index.php` uses the bridge to capture globals and emit responses.
