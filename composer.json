@@ -1,0 +1,32 @@
+{
+  "name": "lumecms/core",
+  "description": "Plugin-first CMS core runtime for LumeCMS",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^8.2",
+    "psr/container": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Lume\\Core\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "packages/wysiwyg-placeholder",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
+  "suggest": {
+    "lumecms/wysiwyg-placeholder": "Optional WYSIWYG capability plugin"
+  },
+  "scripts": {
+    "serve": "php -S 127.0.0.1:8080 -t public public/index.php"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
