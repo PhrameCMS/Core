@@ -25,7 +25,7 @@
     },
     {
       "type": "vcs",
-      "url": "https://github.com/PhrameCMS/dependency-injection-bridge.git"
+      "url": "https://github.com/PhrameCMS/dependency-injection-bridge"
     },
     {
       "type": "vcs",
