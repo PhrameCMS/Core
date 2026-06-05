@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f90395c84145e4996d29c26ce2d530fc",
+    "content-hash": "e10f930308fabccea7cb1833d734e153",
     "packages": [
+        {
+            "name": "phramecms/http-foundation-bridge",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhrameCMS/http-foundation-bridge.git",
+                "reference": "4e29cd863fc6a5a8225b829764f6681479ed8f48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhrameCMS/http-foundation-bridge/zipball/4e29cd863fc6a5a8225b829764f6681479ed8f48",
+                "reference": "4e29cd863fc6a5a8225b829764f6681479ed8f48",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "phramecms/core": "*",
+                "symfony/http-foundation": "^7.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhrameCMS\\HttpFoundationBridge\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "description": "Optional Symfony HttpFoundation transport bridge for PhrameCMS Core",
+            "support": {
+                "source": "https://github.com/PhrameCMS/http-foundation-bridge/tree/main",
+                "issues": "https://github.com/PhrameCMS/http-foundation-bridge/issues"
+            },
+            "time": "2026-06-05T14:38:01+00:00"
+        },
         {
             "name": "psr/container",
             "version": "2.0.2",
@@ -2378,7 +2414,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phramecms/http-foundation-bridge": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -7,7 +7,7 @@ namespace PhrameCMS\Core\Http;
 enum HttpTransportMode: string
 {
     case Native = 'native';
-    case Symfony = 'symfony';
+    case Bridge = 'bridge';
 
     public static function fromConfiguration(string $configured): ?self
     {
@@ -17,8 +17,13 @@ enum HttpTransportMode: string
             return self::Native;
         }
 
-        if ($normalized === self::Symfony->value || $normalized === 'httpfoundation' || $normalized === 'http-foundation') {
-            return self::Symfony;
+        if (
+            $normalized === self::Bridge->value
+            || $normalized === 'symfony'
+            || $normalized === 'httpfoundation'
+            || $normalized === 'http-foundation'
+        ) {
+            return self::Bridge;
         }
 
         return null;

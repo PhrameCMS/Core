@@ -34,16 +34,15 @@ final class HttpTransportFactoryTest extends TestCase
         self::assertInstanceOf(NativeHttpTransport::class, HttpTransportFactory::createDefault());
     }
 
-    public function testConfiguredSymfonyUsesBridgeWhenAvailableOrFallsBack(): void
+    public function testConfiguredBridgeModeUsesPreferredTransportWhenAvailableOrFallsBack(): void
     {
-        putenv('PHRAME_HTTP_TRANSPORT=symfony');
+        putenv('PHRAME_HTTP_TRANSPORT=bridge');
 
         $transport = HttpTransportFactory::createDefault();
 
-        if (self::isSymfonyBridgeInstalled()) {
+        if (self::isPreferredTransportInstalled()) {
             self::assertContains($transport::class, [
                 'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge',
-                'PhrameCMS\\Core\\Http\\HttpFoundationBridge',
             ]);
 
             return;
@@ -79,16 +78,11 @@ final class HttpTransportFactoryTest extends TestCase
         self::assertInstanceOf(CustomTransportForFactoryTest::class, HttpTransportFactory::createDefault());
     }
 
-    private static function isSymfonyBridgeInstalled(): bool
+    private static function isPreferredTransportInstalled(): bool
     {
         $packageBridge = 'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge';
         if (class_exists($packageBridge) && method_exists($packageBridge, 'isAvailable')) {
             return $packageBridge::isAvailable();
-        }
-
-        $coreBridge = 'PhrameCMS\\Core\\Http\\HttpFoundationBridge';
-        if (class_exists($coreBridge) && method_exists($coreBridge, 'isAvailable')) {
-            return $coreBridge::isAvailable();
         }
 
         return false;

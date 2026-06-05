@@ -99,13 +99,9 @@ If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer Symfony 
 
 ## Symfony HttpFoundation Bridge
 
-Core remains framework-neutral at plugin boundaries. Symfony HttpFoundation support is now provided as an optional package.
+Core remains framework-neutral at plugin boundaries. Symfony HttpFoundation support is provided by the external `phramecms/http-foundation-bridge` package and is installed as a core dependency.
 
-Install the bridge package when you want Symfony transport behavior:
-
-```bash
-composer require phramecms/http-foundation-bridge:*
-```
+Core consumes the bridge through Composer dependency resolution (from the package registry/repository), not from a local in-repo bridge directory.
 
 The bridge package depends on `symfony/http-foundation` and converts between Symfony request/response objects and core transport types.
 
@@ -116,12 +112,11 @@ The entrypoint resolves a `HttpTransportInterface` via `HttpTransportFactory`, s
 You can override transport selection with `PHRAME_HTTP_TRANSPORT`:
 
 - `native`: force core native request/response transport.
-- `symfony`: force HttpFoundation transport (falls back to native if unavailable).
-- aliases `httpfoundation` and `http-foundation` are also supported.
+- `http-foundation`: force HttpFoundation bridge transport.
 - `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\HttpTransportInterface`.
 
 Invalid custom class values are fail-fast: startup throws a runtime exception if the class does not exist, cannot be instantiated, or does not implement `HttpTransportInterface`.
 
-If `PHRAME_HTTP_TRANSPORT` is not set, factory behavior is automatic: prefer HttpFoundation bridge when available, otherwise use native transport.
+If `PHRAME_HTTP_TRANSPORT` is not set, factory behavior is automatic: prefer bridge transports discovered by the factory and fall back to native transport only when no bridge implementation is available.
 
 Environment variables are loaded from `.env` at bootstrap via `symfony/dotenv`. Existing process-level environment variables take precedence over `.env` values.

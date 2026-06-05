@@ -13,9 +13,8 @@ final class HttpTransportFactory
     /**
      * @var list<class-string>
      */
-    private const SYMFONY_BRIDGE_CANDIDATES = [
+    private const PREFERRED_TRANSPORT_CANDIDATES = [
         'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge',
-        'PhrameCMS\\Core\\Http\\HttpFoundationBridge',
     ];
 
     public static function createDefault(): HttpTransportInterface
@@ -26,7 +25,7 @@ final class HttpTransportFactory
             return self::fromConfiguration($configured);
         }
 
-        $transport = self::createSymfonyBridgeTransport();
+        $transport = self::createPreferredTransport();
         if ($transport !== null) {
             return $transport;
         }
@@ -42,8 +41,8 @@ final class HttpTransportFactory
             return new NativeHttpTransport();
         }
 
-        if ($mode === HttpTransportMode::Symfony) {
-            $transport = self::createSymfonyBridgeTransport();
+        if ($mode === HttpTransportMode::Bridge) {
+            $transport = self::createPreferredTransport();
             if ($transport !== null) {
                 return $transport;
             }
@@ -79,26 +78,26 @@ final class HttpTransportFactory
         return $transport;
     }
 
-    private static function createSymfonyBridgeTransport(): ?HttpTransportInterface
+    private static function createPreferredTransport(): ?HttpTransportInterface
     {
-        foreach (self::SYMFONY_BRIDGE_CANDIDATES as $bridgeClass) {
-            if (!class_exists($bridgeClass)) {
+        foreach (self::PREFERRED_TRANSPORT_CANDIDATES as $transportClass) {
+            if (!class_exists($transportClass)) {
                 continue;
             }
 
-            if (!is_subclass_of($bridgeClass, HttpTransportInterface::class)) {
+            if (!is_subclass_of($transportClass, HttpTransportInterface::class)) {
                 continue;
             }
 
-            if (!method_exists($bridgeClass, 'isAvailable')) {
+            if (!method_exists($transportClass, 'isAvailable')) {
                 continue;
             }
 
-            if (!$bridgeClass::isAvailable()) {
+            if (!$transportClass::isAvailable()) {
                 continue;
             }
 
-            return new $bridgeClass();
+            return new $transportClass();
         }
 
         return null;
