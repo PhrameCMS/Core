@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use PhrameCMS\Core\Application;
-use PhrameCMS\Core\Http\Request;
+use PhrameCMS\Core\Http\HttpTransportFactory;
 
 $autoload = __DIR__ . '/../vendor/autoload.php';
 if (!is_file($autoload)) {
@@ -18,5 +18,6 @@ if (!is_file($autoload)) {
 require $autoload;
 
 $app = Application::bootFromComposer();
-$response = $app->handle(Request::fromGlobals());
-$response->send();
+$transport = HttpTransportFactory::createDefault();
+$response = $app->handle($transport->captureRequest());
+$transport->emitResponse($response);

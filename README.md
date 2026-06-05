@@ -75,3 +75,19 @@ To contribute routes, register a route provider class and tag it as `route.provi
 
 - This repository currently contains one reference plugin package in `packages/wysiwyg`.
 - The reference plugin is optional and is not part of core runtime logic.
+
+## Symfony HttpFoundation Bridge
+
+Core remains framework-neutral at plugin boundaries. `symfony/http-foundation` is included as a core dependency, and `public/index.php` uses the bridge to capture globals and emit responses.
+
+The bridge layer keeps a swap seam for the future: plugin contracts still use `PhrameCMS\Core\Http\Request` and `PhrameCMS\Core\Http\Response`, not Symfony types.
+
+The entrypoint resolves a `HttpTransportInterface` via `HttpTransportFactory`, so replacing HttpFoundation later is isolated to transport classes.
+
+You can override transport selection with `PHRAME_HTTP_TRANSPORT`:
+
+- `native`: force core native request/response transport.
+- `symfony`: force HttpFoundation transport (falls back to native if unavailable).
+- `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\HttpTransportInterface`.
+
+If `PHRAME_HTTP_TRANSPORT` is not set, factory behavior is automatic: prefer HttpFoundation bridge when available, otherwise use native transport.
