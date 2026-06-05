@@ -24,6 +24,11 @@ final class SymfonyContainer implements ContainerBuilderInterface
     private array $definitions = [];
 
     /**
+     * @var array<string, mixed>
+     */
+    private array $sharedInstances = [];
+
+    /**
      * @var array<string, true>
      */
     private array $initializedSharedIds = [];
@@ -56,7 +61,7 @@ final class SymfonyContainer implements ContainerBuilderInterface
         ];
 
         if (isset($this->initializedSharedIds[$id])) {
-            $this->container->set($id, null);
+            unset($this->sharedInstances[$id]);
             unset($this->initializedSharedIds[$id]);
         }
     }
@@ -70,7 +75,7 @@ final class SymfonyContainer implements ContainerBuilderInterface
         $definition = $this->definitions[$id];
 
         if ($definition['shared'] && isset($this->initializedSharedIds[$id])) {
-            return $this->container->get($id);
+            return $this->sharedInstances[$id];
         }
 
         try {
@@ -80,7 +85,7 @@ final class SymfonyContainer implements ContainerBuilderInterface
         }
 
         if ($definition['shared']) {
-            $this->container->set($id, $resolved);
+            $this->sharedInstances[$id] = $resolved;
             $this->initializedSharedIds[$id] = true;
         }
 
