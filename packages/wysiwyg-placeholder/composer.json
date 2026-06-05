@@ -2,7 +2,7 @@
   "name": "lumecms/wysiwyg-placeholder",
   "description": "Optional WYSIWYG capability plugin for LumeCMS Core",
   "type": "library",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "require": {
     "php": "^8.2",
     "lumecms/core": "*"

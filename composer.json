@@ -2,7 +2,7 @@
   "name": "lumecms/core",
   "description": "Plugin-first CMS core runtime for LumeCMS",
   "type": "library",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "require": {
     "php": "^8.2",
     "psr/container": "^2.0"
