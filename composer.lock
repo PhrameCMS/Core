@@ -4,8 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "73777381bdc7c07f4a82b3d90c35d96c",
+    "content-hash": "922ce9ef9563ba20563260f489e5b059",
     "packages": [
+        {
+            "name": "phramecms/dependency-injection-bridge",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhrameCMS/dependency-injection-bridge.git",
+                "reference": "38c705e8265ff5c7caa468316da86e1fda86d8c7"
+            },
+            "require": {
+                "php": "^8.2",
+                "phramecms/core": "dev-main",
+                "symfony/dependency-injection": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^12.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhrameCMS\\DependencyInjectionBridge\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PhrameCMS\\DependencyInjectionBridge\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ]
+            },
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "description": "Symfony DependencyInjection bridge for PhrameCMS Core",
+            "time": "2026-06-05T17:27:21+00:00"
+        },
         {
             "name": "phramecms/dotenv-bridge",
             "version": "dev-main",
@@ -2463,6 +2502,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phramecms/dependency-injection-bridge": 20,
         "phramecms/dotenv-bridge": 20,
         "phramecms/http-foundation-bridge": 20
     },

@@ -7,7 +7,6 @@ use PhrameCMS\Core\ContainerFactory;
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
 use PhrameCMS\Core\CoreContainer;
 use PhrameCMS\Core\Contracts\ServiceTag;
-use PhrameCMS\Core\SymfonyContainer;
 
 final class ContainerFactoryTest extends TestCase
 {
@@ -36,18 +35,20 @@ final class ContainerFactoryTest extends TestCase
         self::assertInstanceOf(CoreContainer::class, $container);
     }
 
-    public function testConfiguredSymfonyIsStrict(): void
+    public function testConfiguredDependencyInjectionIsStrict(): void
     {
-        putenv('PHRAME_CONTAINER=symfony');
+        putenv('PHRAME_CONTAINER=dependency-injection');
 
-        if (SymfonyContainer::isAvailable()) {
-            self::assertInstanceOf(SymfonyContainer::class, ContainerFactory::createDefault());
+        if (self::isDependencyInjectionBridgeInstalled()) {
+            self::assertContains(ContainerFactory::createDefault()::class, [
+                'PhrameCMS\\DependencyInjectionBridge\\DependencyInjectionBridge',
+            ]);
 
             return;
         }
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Invalid PHRAME_CONTAINER "symfony"');
+        $this->expectExceptionMessage('Invalid PHRAME_CONTAINER "dependency-injection"');
 
         ContainerFactory::createDefault();
     }
@@ -79,6 +80,15 @@ final class ContainerFactoryTest extends TestCase
         $container = ContainerFactory::createDefault();
 
         self::assertInstanceOf(CustomContainerForFactoryTest::class, $container);
+    }
+
+    private static function isDependencyInjectionBridgeInstalled(): bool
+    {
+        $bridgeClass = 'PhrameCMS\\DependencyInjectionBridge\\DependencyInjectionBridge';
+
+        return class_exists($bridgeClass)
+            && method_exists($bridgeClass, 'isAvailable')
+            && $bridgeClass::isAvailable();
     }
 }
 

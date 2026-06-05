@@ -7,7 +7,7 @@ namespace PhrameCMS\Core;
 enum ContainerEngine: string
 {
     case Native = 'native';
-    case Symfony = 'symfony';
+    case DependencyInjection = 'dependency-injection';
 
     public static function fromConfiguration(string $configured): ?self
     {
@@ -17,8 +17,12 @@ enum ContainerEngine: string
             return self::Native;
         }
 
-        if ($normalized === self::Symfony->value || $normalized === 'symfony-di' || $normalized === 'dependency-injection') {
-            return self::Symfony;
+        if (
+            $normalized === self::DependencyInjection->value
+            || $normalized === 'symfony'
+            || $normalized === 'symfony-di'
+        ) {
+            return self::DependencyInjection;
         }
 
         return null;

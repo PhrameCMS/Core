@@ -10,7 +10,12 @@ use Throwable;
 
 final class ContainerFactory
 {
-    private const SYMFONY_ADAPTER_CLASS = 'PhrameCMS\\Core\\SymfonyContainer';
+    /**
+     * @var list<class-string>
+     */
+    private const PREFERRED_CONTAINER_CANDIDATES = [
+        'PhrameCMS\\DependencyInjectionBridge\\DependencyInjectionBridge',
+    ];
 
     public static function createDefault(): ContainerBuilderInterface
     {
@@ -20,8 +25,9 @@ final class ContainerFactory
             return self::fromConfiguration($configured);
         }
 
-        if (self::isSymfonyAdapterAvailable()) {
-            return self::createSymfonyAdapter();
+        $container = self::createPreferredContainer();
+        if ($container !== null) {
+            return $container;
         }
 
         return new CoreContainer();
@@ -35,13 +41,14 @@ final class ContainerFactory
             return new CoreContainer();
         }
 
-        if ($engine === ContainerEngine::Symfony) {
-            if (self::isSymfonyAdapterAvailable()) {
-                return self::createSymfonyAdapter();
+        if ($engine === ContainerEngine::DependencyInjection) {
+            $container = self::createPreferredContainer();
+            if ($container !== null) {
+                return $container;
             }
 
             throw new RuntimeException(
-                'Invalid PHRAME_CONTAINER "symfony": Symfony DependencyInjection adapter is unavailable.'
+                sprintf('Invalid PHRAME_CONTAINER "%s": dependency-injection bridge is unavailable.', $configured)
             );
         }
 
@@ -73,18 +80,28 @@ final class ContainerFactory
         return $container;
     }
 
-    private static function isSymfonyAdapterAvailable(): bool
+    private static function createPreferredContainer(): ?ContainerBuilderInterface
     {
-        $adapterClass = self::SYMFONY_ADAPTER_CLASS;
+        foreach (self::PREFERRED_CONTAINER_CANDIDATES as $containerClass) {
+            if (!class_exists($containerClass)) {
+                continue;
+            }
 
-        return class_exists($adapterClass)
-            && $adapterClass::isAvailable();
-    }
+            if (!is_subclass_of($containerClass, ContainerBuilderInterface::class)) {
+                continue;
+            }
 
-    private static function createSymfonyAdapter(): ContainerBuilderInterface
-    {
-        $adapterClass = self::SYMFONY_ADAPTER_CLASS;
+            if (!method_exists($containerClass, 'isAvailable')) {
+                continue;
+            }
 
-        return new $adapterClass();
+            if (!$containerClass::isAvailable()) {
+                continue;
+            }
+
+            return new $containerClass();
+        }
+
+        return null;
     }
 }

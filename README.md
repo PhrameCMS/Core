@@ -86,16 +86,18 @@ To contribute routes, register a route provider class and tag it as `route.provi
 
 Core resolves its container through `ContainerFactory`, with all runtime/plugin code targeting `PhrameCMS\Core\Contracts\ContainerBuilderInterface`.
 
+DependencyInjection provider support is implemented through the external `phramecms/dependency-injection-bridge` package.
+
 You can override container engine selection with `PHRAME_CONTAINER`:
 
 - `native`: force core native container.
-- `symfony`: force Symfony DependencyInjection-backed adapter (fails if unavailable).
-- aliases `symfony-di` and `dependency-injection` are also supported.
+- `dependency-injection`: force dependency-injection bridge container (fails if unavailable).
+- aliases `symfony` and `symfony-di` are also supported for compatibility.
 - `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\ContainerBuilderInterface`.
 
 Invalid custom class values are fail-fast: startup throws a runtime exception if the class does not exist, cannot be instantiated, or does not implement `ContainerBuilderInterface`.
 
-If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer Symfony adapter when available, otherwise use native container.
+If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer bridge containers discovered by the factory and fall back to native container when no bridge implementation is available.
 
 ## Symfony HttpFoundation Bridge
 
