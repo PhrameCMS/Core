@@ -17,6 +17,15 @@ if (!is_file($autoload)) {
 
 require $autoload;
 
+$envPath = dirname(__DIR__) . '/.env';
+if (is_file($envPath)) {
+    $dotenvClass = 'Symfony\\Component\\Dotenv\\Dotenv';
+    if (class_exists($dotenvClass)) {
+        $dotenv = new $dotenvClass();
+        $dotenv->usePutenv()->loadEnv($envPath);
+    }
+}
+
 $app = Application::bootFromComposer();
 $transport = HttpTransportFactory::createDefault();
 $response = $app->handle($transport->captureRequest());
