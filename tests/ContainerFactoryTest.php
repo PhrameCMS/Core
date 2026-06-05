@@ -87,7 +87,6 @@ final class ContainerFactoryTest extends TestCase
         $bridgeClass = 'PhrameCMS\\DependencyInjectionBridge\\DependencyInjectionBridge';
 
         return class_exists($bridgeClass)
-            && method_exists($bridgeClass, 'isAvailable')
             && $bridgeClass::isAvailable();
     }
 }

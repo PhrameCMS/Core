@@ -81,7 +81,7 @@ final class HttpTransportFactoryTest extends TestCase
     private static function isPreferredTransportInstalled(): bool
     {
         $packageBridge = 'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge';
-        if (class_exists($packageBridge) && method_exists($packageBridge, 'isAvailable')) {
+        if (class_exists($packageBridge)) {
             return $packageBridge::isAvailable();
         }
 

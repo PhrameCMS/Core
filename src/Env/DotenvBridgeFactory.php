@@ -92,12 +92,8 @@ final class DotenvBridgeFactory
 
 final class LegacyStaticDotenvBridgeAdapter implements DotenvBridgeInterface
 {
-    /** @var class-string */
     private string $className;
 
-    /**
-     * @param class-string $className
-     */
     public function __construct(string $className)
     {
         $this->className = $className;

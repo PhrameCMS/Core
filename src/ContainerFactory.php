@@ -11,7 +11,7 @@ use Throwable;
 final class ContainerFactory
 {
     /**
-     * @var list<class-string>
+     * @var list<string>
      */
     private const PREFERRED_CONTAINER_CANDIDATES = [
         'PhrameCMS\\DependencyInjectionBridge\\DependencyInjectionBridge',
@@ -84,14 +84,6 @@ final class ContainerFactory
     {
         foreach (self::PREFERRED_CONTAINER_CANDIDATES as $containerClass) {
             if (!class_exists($containerClass)) {
-                continue;
-            }
-
-            if (!is_subclass_of($containerClass, ContainerBuilderInterface::class)) {
-                continue;
-            }
-
-            if (!method_exists($containerClass, 'isAvailable')) {
                 continue;
             }
 

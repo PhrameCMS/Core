@@ -11,7 +11,7 @@ use Throwable;
 final class HttpTransportFactory
 {
     /**
-     * @var list<class-string>
+     * @var list<string>
      */
     private const PREFERRED_TRANSPORT_CANDIDATES = [
         'PhrameCMS\\HttpFoundationBridge\\HttpFoundationBridge',
@@ -82,14 +82,6 @@ final class HttpTransportFactory
     {
         foreach (self::PREFERRED_TRANSPORT_CANDIDATES as $transportClass) {
             if (!class_exists($transportClass)) {
-                continue;
-            }
-
-            if (!is_subclass_of($transportClass, HttpTransportInterface::class)) {
-                continue;
-            }
-
-            if (!method_exists($transportClass, 'isAvailable')) {
                 continue;
             }
 
