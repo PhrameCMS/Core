@@ -1,6 +1,6 @@
 {
-  "name": "lumecms/core",
-  "description": "Plugin-first CMS core runtime for LumeCMS",
+  "name": "phramecms/core",
+  "description": "Plugin-first CMS core runtime for PhrameCMS",
   "type": "library",
   "license": "GPL-3.0-only",
   "require": {
@@ -9,20 +9,20 @@
   },
   "autoload": {
     "psr-4": {
-      "Lume\\Core\\": "src/"
+      "PhrameCMS\\Core\\": "src/"
     }
   },
   "repositories": [
     {
       "type": "path",
-      "url": "packages/wysiwyg-placeholder",
+      "url": "packages/wysiwyg",
       "options": {
         "symlink": true
       }
     }
   ],
   "suggest": {
-    "lumecms/wysiwyg-placeholder": "Optional WYSIWYG capability plugin"
+    "phramecms/wysiwyg": "Optional WYSIWYG capability plugin"
   },
   "scripts": {
     "serve": "php -S 127.0.0.1:8080 -t public public/index.php"

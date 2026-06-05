@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core;
+namespace PhrameCMS\Core;
 
 final class CapabilityRegistry
 {

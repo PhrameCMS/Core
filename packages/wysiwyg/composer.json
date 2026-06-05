@@ -1,0 +1,23 @@
+{
+  "name": "phramecms/wysiwyg",
+  "description": "Optional WYSIWYG capability plugin for PhrameCMS Core",
+  "type": "library",
+  "license": "GPL-3.0-only",
+  "require": {
+    "php": "^8.2",
+    "phramecms/core": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "PhrameCMS\\Wysiwyg\\": "src/"
+    }
+  },
+  "extra": {
+    "phramecms": {
+      "provider": "PhrameCMS\\Wysiwyg\\WysiwygServiceProvider",
+      "capabilities": [
+        "editor.wysiwyg"
+      ]
+    }
+  }
+}

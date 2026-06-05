@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Plugin;
+namespace PhrameCMS\Core\Plugin;
 
 final class PluginManager
 {
@@ -38,13 +38,13 @@ final class PluginManager
                     continue;
                 }
 
-                $lume = $extra['lume'] ?? null;
-                if (!is_array($lume)) {
+                $pluginMeta = $extra['phramecms'] ?? $extra['lume'] ?? null;
+                if (!is_array($pluginMeta)) {
                     continue;
                 }
 
-                $providers = $this->normalizeStringList($lume['provider'] ?? $lume['providers'] ?? []);
-                $capabilities = $this->normalizeStringList($lume['capabilities'] ?? []);
+                $providers = $this->normalizeStringList($pluginMeta['provider'] ?? $pluginMeta['providers'] ?? []);
+                $capabilities = $this->normalizeStringList($pluginMeta['capabilities'] ?? []);
 
                 if ($providers === []) {
                     continue;

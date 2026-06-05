@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Plugin;
+namespace PhrameCMS\Core\Plugin;
 
 final class PluginDefinition
 {

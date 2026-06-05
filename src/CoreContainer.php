@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core;
+namespace PhrameCMS\Core;
 
-use Lume\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
 use Throwable;
 
 final class CoreContainer implements ContainerBuilderInterface

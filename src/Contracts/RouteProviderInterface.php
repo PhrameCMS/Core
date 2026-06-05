@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Contracts;
+namespace PhrameCMS\Core\Contracts;
 
 interface RouteProviderInterface
 {
     /**
-     * @return array<int, \Lume\Core\Routing\Route>
+     * @return array<int, \PhrameCMS\Core\Routing\Route>
      */
     public function routes(): array;
 }

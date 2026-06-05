@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core;
+namespace PhrameCMS\Core;
 
-use Lume\Core\Contracts\ContainerBuilderInterface;
-use Lume\Core\Contracts\RouteProviderInterface;
-use Lume\Core\Contracts\ServiceProviderInterface;
-use Lume\Core\Http\Request;
-use Lume\Core\Http\Response;
-use Lume\Core\Plugin\PluginManager;
-use Lume\Core\Routing\Route;
+use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\RouteProviderInterface;
+use PhrameCMS\Core\Contracts\ServiceProviderInterface;
+use PhrameCMS\Core\Http\Request;
+use PhrameCMS\Core\Http\Response;
+use PhrameCMS\Core\Plugin\PluginManager;
+use PhrameCMS\Core\Routing\Route;
 use RuntimeException;
 
 final class Application
@@ -92,7 +92,7 @@ final class Application
         $this->routes[] = Route::create('GET', '/health', function (): Response {
             return Response::json([
                 'status' => 'ok',
-                'service' => 'lumecms-core',
+                'service' => 'phramecms-core',
                 'version' => (string) $this->container->get('core.version'),
             ]);
         });

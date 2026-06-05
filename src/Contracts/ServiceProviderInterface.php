@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Contracts;
+namespace PhrameCMS\Core\Contracts;
 
 interface ServiceProviderInterface
 {

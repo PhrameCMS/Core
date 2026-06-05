@@ -8,17 +8,17 @@ Plugins should be installable, removable, and upgradable without changing core s
 
 - Publish as a Composer package.
 - Require PHP 8.2+.
-- Require `lumecms/core`.
+- Require `phramecms/core`.
 - Provide PSR-4 autoloading.
 
 ## Composer Metadata
 
-Use `extra.lume` in your plugin `composer.json`.
+Use `extra.phramecms` in your plugin `composer.json`.
 
 ```json
 {
   "extra": {
-    "lume": {
+    "phramecms": {
       "provider": "Vendor\\Package\\MyServiceProvider",
       "capabilities": ["feature.example"]
     }
@@ -30,20 +30,20 @@ Use `extra.lume` in your plugin `composer.json`.
 
 ## Service Provider Contract
 
-Implement `Lume\\Core\\Contracts\\ServiceProviderInterface`.
+Implement `PhrameCMS\\Core\\Contracts\\ServiceProviderInterface`.
 
 - `register`: define services and tags.
 - `boot`: finalize runtime behavior after registration.
 
 ## Route Contribution
 
-1. Implement `Lume\\Core\\Contracts\\RouteProviderInterface`.
+1. Implement `PhrameCMS\\Core\\Contracts\\RouteProviderInterface`.
 2. Register the route provider service in `register`.
 3. Tag the service with `route.provider`.
 
 ## Capability Reporting
 
-Declare capability strings in `extra.lume.capabilities`.
+Declare capability strings in `extra.phramecms.capabilities`.
 
 These strings are exposed by `GET /capabilities` so clients can detect available features dynamically.
 

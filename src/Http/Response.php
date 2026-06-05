@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Http;
+namespace PhrameCMS\Core\Http;
 
 final class Response
 {

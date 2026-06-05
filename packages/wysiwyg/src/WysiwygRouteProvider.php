@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Lume\Plugin\WysiwygPlaceholder;
+namespace PhrameCMS\Wysiwyg;
 
-use Lume\Core\Contracts\RouteProviderInterface;
-use Lume\Core\Http\Response;
-use Lume\Core\Routing\Route;
+use PhrameCMS\Core\Contracts\RouteProviderInterface;
+use PhrameCMS\Core\Http\Response;
+use PhrameCMS\Core\Routing\Route;
 
 final class WysiwygRouteProvider implements RouteProviderInterface
 {
@@ -14,7 +14,7 @@ final class WysiwygRouteProvider implements RouteProviderInterface
     {
         return [
             Route::create('GET', '/plugins/wysiwyg/status', static fn (): Response => Response::json([
-                'plugin' => 'wysiwyg-placeholder',
+                'plugin' => 'wysiwyg',
                 'enabled' => true,
                 'mode' => 'placeholder',
             ])),

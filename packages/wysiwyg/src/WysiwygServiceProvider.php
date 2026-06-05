@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Lume\Plugin\WysiwygPlaceholder;
+namespace PhrameCMS\Wysiwyg;
 
-use Lume\Core\Contracts\ContainerBuilderInterface;
-use Lume\Core\Contracts\ServiceProviderInterface;
+use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\ServiceProviderInterface;
 
 final class WysiwygServiceProvider implements ServiceProviderInterface
 {

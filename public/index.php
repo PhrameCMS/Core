@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Lume\Core\Application;
-use Lume\Core\Http\Request;
+use PhrameCMS\Core\Application;
+use PhrameCMS\Core\Http\Request;
 
 $autoload = __DIR__ . '/../vendor/autoload.php';
 if (!is_file($autoload)) {

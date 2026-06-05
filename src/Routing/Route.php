@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Lume\Core\Routing;
+namespace PhrameCMS\Core\Routing;
 
 use Closure;
 
 final class Route
 {
     /**
-     * @param Closure(\Lume\Core\Http\Request, \Lume\Core\Contracts\ContainerBuilderInterface): \Lume\Core\Http\Response $handler
+     * @param Closure(\PhrameCMS\Core\Http\Request, \PhrameCMS\Core\Contracts\ContainerBuilderInterface): \PhrameCMS\Core\Http\Response $handler
      */
     public function __construct(
         public readonly string $method,
@@ -19,7 +19,7 @@ final class Route
     }
 
     /**
-     * @param callable(\Lume\Core\Http\Request, \Lume\Core\Contracts\ContainerBuilderInterface): \Lume\Core\Http\Response $handler
+     * @param callable(\PhrameCMS\Core\Http\Request, \PhrameCMS\Core\Contracts\ContainerBuilderInterface): \PhrameCMS\Core\Http\Response $handler
      */
     public static function create(string $method, string $path, callable $handler): self
     {
