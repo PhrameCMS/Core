@@ -5,10 +5,10 @@
   "license": "GPL-3.0-only",
   "require": {
     "php": "^8.2",
+    "phramecms/dotenv-bridge": "dev-main",
     "phramecms/http-foundation-bridge": "dev-main",
     "psr/container": "^2.0",
-    "symfony/dependency-injection": "^7.0",
-    "symfony/dotenv": "^7.0"
+    "symfony/dependency-injection": "^7.0"
   },
   "autoload": {
     "psr-4": {
@@ -22,6 +22,10 @@
       "options": {
         "symlink": true
       }
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/PhrameCMS/dotenv-bridge"
     },
     {
       "type": "vcs",

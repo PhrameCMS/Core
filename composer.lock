@@ -4,8 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e10f930308fabccea7cb1833d734e153",
+    "content-hash": "73777381bdc7c07f4a82b3d90c35d96c",
     "packages": [
+        {
+            "name": "phramecms/dotenv-bridge",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhrameCMS/dotenv-bridge.git",
+                "reference": "a7a40a5e1e335d827d275e46002351416e52941e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhrameCMS/dotenv-bridge/zipball/a7a40a5e1e335d827d275e46002351416e52941e",
+                "reference": "a7a40a5e1e335d827d275e46002351416e52941e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "symfony/dotenv": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^12.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhrameCMS\\DotenvBridge\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PhrameCMS\\DotenvBridge\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ]
+            },
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "description": "Dotenv bridge package for PhrameCMS Core",
+            "support": {
+                "source": "https://github.com/PhrameCMS/dotenv-bridge/tree/main",
+                "issues": "https://github.com/PhrameCMS/dotenv-bridge/issues"
+            },
+            "time": "2026-06-05T15:22:12+00:00"
+        },
         {
             "name": "phramecms/http-foundation-bridge",
             "version": "dev-main",
@@ -2415,6 +2463,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "phramecms/dotenv-bridge": 20,
         "phramecms/http-foundation-bridge": 20
     },
     "prefer-stable": true,

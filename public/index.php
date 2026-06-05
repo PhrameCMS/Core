@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhrameCMS\Core\Application;
+use PhrameCMS\Core\Env\DotenvBridgeFactory;
 use PhrameCMS\Core\Http\HttpTransportFactory;
 
 $autoload = __DIR__ . '/../vendor/autoload.php';
@@ -18,13 +19,7 @@ if (!is_file($autoload)) {
 require $autoload;
 
 $envPath = dirname(__DIR__) . '/.env';
-if (is_file($envPath)) {
-    $dotenvClass = 'Symfony\\Component\\Dotenv\\Dotenv';
-    if (class_exists($dotenvClass)) {
-        $dotenv = new $dotenvClass();
-        $dotenv->usePutenv()->loadEnv($envPath);
-    }
-}
+DotenvBridgeFactory::loadEnv($envPath);
 
 $app = Application::bootFromComposer();
 $transport = HttpTransportFactory::createDefault();

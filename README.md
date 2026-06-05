@@ -119,4 +119,14 @@ Invalid custom class values are fail-fast: startup throws a runtime exception if
 
 If `PHRAME_HTTP_TRANSPORT` is not set, factory behavior is automatic: prefer bridge transports discovered by the factory and fall back to native transport only when no bridge implementation is available.
 
-Environment variables are loaded from `.env` at bootstrap via `symfony/dotenv`. Existing process-level environment variables take precedence over `.env` values.
+Environment variables are loaded from `.env` at bootstrap via a dotenv bridge.
+
+Core supports provider-agnostic dotenv bridge implementations through `PhrameCMS\Core\Contracts\DotenvBridgeInterface`.
+
+You can override bridge selection with `PHRAME_DOTENV_BRIDGE`:
+
+- `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\DotenvBridgeInterface`.
+
+If `PHRAME_DOTENV_BRIDGE` is not set, core attempts to use the default `phramecms/dotenv-bridge` package class when available.
+
+Existing process-level environment variables take precedence over `.env` values.
