@@ -6,7 +6,9 @@ namespace PhrameCMS\Core;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
 use PhrameCMS\Core\Contracts\RouteProviderInterface;
+use PhrameCMS\Core\Contracts\ServiceTag;
 use PhrameCMS\Core\Contracts\ServiceProviderInterface;
+use PhrameCMS\Core\Http\HttpMethod;
 use PhrameCMS\Core\Http\Request;
 use PhrameCMS\Core\Http\Response;
 use PhrameCMS\Core\Plugin\PluginManager;
@@ -89,7 +91,7 @@ final class Application
 
     private function registerCoreRoutes(): void
     {
-        $this->routes[] = Route::create('GET', '/health', function (): Response {
+        $this->routes[] = Route::create(HttpMethod::GET, '/health', function (): Response {
             return Response::json([
                 'status' => 'ok',
                 'service' => 'phramecms-core',
@@ -97,7 +99,7 @@ final class Application
             ]);
         });
 
-        $this->routes[] = Route::create('GET', '/capabilities', function (): Response {
+        $this->routes[] = Route::create(HttpMethod::GET, '/capabilities', function (): Response {
             /** @var CapabilityRegistry $capabilities */
             $capabilities = $this->container->get(CapabilityRegistry::class);
 
@@ -109,7 +111,7 @@ final class Application
 
     private function collectPluginRoutes(): void
     {
-        $providerIds = $this->container->tagged('route.provider');
+        $providerIds = $this->container->tagged(ServiceTag::RouteProvider);
 
         foreach ($providerIds as $providerId) {
             $provider = $this->container->get($providerId);

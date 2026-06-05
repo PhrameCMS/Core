@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhrameCMS\Core;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\ServiceTag;
 use Throwable;
 
 final class CoreContainer implements ContainerBuilderInterface
@@ -66,20 +67,22 @@ final class CoreContainer implements ContainerBuilderInterface
         return isset($this->definitions[$id]);
     }
 
-    public function tag(string $tag, string $serviceId): void
+    public function tag(ServiceTag|string $tag, string $serviceId): void
     {
-        if (!isset($this->tags[$tag])) {
-            $this->tags[$tag] = [];
+        $tagKey = $this->normalizeTag($tag);
+
+        if (!isset($this->tags[$tagKey])) {
+            $this->tags[$tagKey] = [];
         }
 
-        if (!in_array($serviceId, $this->tags[$tag], true)) {
-            $this->tags[$tag][] = $serviceId;
+        if (!in_array($serviceId, $this->tags[$tagKey], true)) {
+            $this->tags[$tagKey][] = $serviceId;
         }
     }
 
-    public function tagged(string $tag): array
+    public function tagged(ServiceTag|string $tag): array
     {
-        return $this->tags[$tag] ?? [];
+        return $this->tags[$this->normalizeTag($tag)] ?? [];
     }
 
     private function resolve(mixed $concrete): mixed
@@ -89,5 +92,14 @@ final class CoreContainer implements ContainerBuilderInterface
         }
 
         return $concrete;
+    }
+
+    private function normalizeTag(ServiceTag|string $tag): string
+    {
+        if ($tag instanceof ServiceTag) {
+            return $tag->value;
+        }
+
+        return trim($tag);
     }
 }

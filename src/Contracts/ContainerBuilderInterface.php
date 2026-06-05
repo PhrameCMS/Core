@@ -12,10 +12,10 @@ interface ContainerBuilderInterface
 
     public function set(string $id, mixed $concrete, bool $shared = true): void;
 
-    public function tag(string $tag, string $serviceId): void;
+    public function tag(ServiceTag|string $tag, string $serviceId): void;
 
     /**
      * @return array<int, string>
      */
-    public function tagged(string $tag): array;
+    public function tagged(ServiceTag|string $tag): array;
 }

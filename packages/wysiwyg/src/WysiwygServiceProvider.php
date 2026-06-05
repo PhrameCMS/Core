@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhrameCMS\Wysiwyg;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\ServiceTag;
 use PhrameCMS\Core\Contracts\ServiceProviderInterface;
 
 final class WysiwygServiceProvider implements ServiceProviderInterface
@@ -12,7 +13,7 @@ final class WysiwygServiceProvider implements ServiceProviderInterface
     public function register(ContainerBuilderInterface $container): void
     {
         $container->set(WysiwygRouteProvider::class, static fn (): WysiwygRouteProvider => new WysiwygRouteProvider());
-        $container->tag('route.provider', WysiwygRouteProvider::class);
+        $container->tag(ServiceTag::RouteProvider, WysiwygRouteProvider::class);
     }
 
     public function boot(ContainerBuilderInterface $container): void

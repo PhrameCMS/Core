@@ -39,7 +39,22 @@ Implement `PhrameCMS\\Core\\Contracts\\ServiceProviderInterface`.
 
 1. Implement `PhrameCMS\\Core\\Contracts\\RouteProviderInterface`.
 2. Register the route provider service in `register`.
-3. Tag the service with `route.provider`.
+3. Tag the service with `ServiceTag::RouteProvider`.
+
+Example:
+
+```php
+use PhrameCMS\Core\Contracts\ServiceTag;
+use PhrameCMS\Core\Http\HttpMethod;
+use PhrameCMS\Core\Http\Response;
+use PhrameCMS\Core\Routing\Route;
+
+$container->tag(ServiceTag::RouteProvider, ExampleRouteProvider::class);
+
+Route::create(HttpMethod::GET, '/plugins/example/status', static fn (): Response => Response::json([
+  'ok' => true,
+]));
+```
 
 ## Capability Reporting
 

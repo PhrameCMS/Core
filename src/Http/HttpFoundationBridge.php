@@ -64,7 +64,7 @@ final class HttpFoundationBridge implements HttpTransportInterface
         $headers = $request->headers->all();
 
         return new Request(
-            strtoupper($request->getMethod()),
+            HttpMethod::fromString($request->getMethod()),
             $request->getPathInfo(),
             $query,
             self::flattenHeaders($headers),

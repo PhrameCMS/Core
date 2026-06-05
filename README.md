@@ -88,6 +88,9 @@ You can override transport selection with `PHRAME_HTTP_TRANSPORT`:
 
 - `native`: force core native request/response transport.
 - `symfony`: force HttpFoundation transport (falls back to native if unavailable).
+- aliases `httpfoundation` and `http-foundation` are also supported.
 - `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\HttpTransportInterface`.
+
+Invalid custom class values are fail-fast: startup throws a runtime exception if the class does not exist, cannot be instantiated, or does not implement `HttpTransportInterface`.
 
 If `PHRAME_HTTP_TRANSPORT` is not set, factory behavior is automatic: prefer HttpFoundation bridge when available, otherwise use native transport.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PhrameCMS\Core\Routing;
 
 use Closure;
+use PhrameCMS\Core\Http\HttpMethod;
 
 final class Route
 {
@@ -12,7 +13,7 @@ final class Route
      * @param Closure(\PhrameCMS\Core\Http\Request, \PhrameCMS\Core\Contracts\ContainerBuilderInterface): \PhrameCMS\Core\Http\Response $handler
      */
     public function __construct(
-        public readonly string $method,
+        public readonly HttpMethod $method,
         public readonly string $path,
         public readonly Closure $handler,
     ) {
@@ -21,13 +22,13 @@ final class Route
     /**
      * @param callable(\PhrameCMS\Core\Http\Request, \PhrameCMS\Core\Contracts\ContainerBuilderInterface): \PhrameCMS\Core\Http\Response $handler
      */
-    public static function create(string $method, string $path, callable $handler): self
+    public static function create(HttpMethod $method, string $path, callable $handler): self
     {
-        return new self(strtoupper($method), $path, Closure::fromCallable($handler));
+        return new self($method, $path, Closure::fromCallable($handler));
     }
 
-    public function matches(string $method, string $path): bool
+    public function matches(HttpMethod $method, string $path): bool
     {
-        return strtoupper($method) === $this->method && $path === $this->path;
+        return $method === $this->method && $path === $this->path;
     }
 }

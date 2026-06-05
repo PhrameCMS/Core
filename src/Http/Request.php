@@ -7,7 +7,7 @@ namespace PhrameCMS\Core\Http;
 final class Request
 {
     public function __construct(
-        public readonly string $method,
+        public readonly HttpMethod $method,
         public readonly string $path,
         public readonly array $query,
         public readonly array $headers,
@@ -17,7 +17,7 @@ final class Request
 
     public static function fromGlobals(): self
     {
-        $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
+        $method = HttpMethod::fromString((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
         $rawPath = (string) ($_SERVER['REQUEST_URI'] ?? '/');
         $path = (string) parse_url($rawPath, PHP_URL_PATH);
         $query = $_GET;
