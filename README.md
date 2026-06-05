@@ -99,6 +99,21 @@ Invalid custom class values are fail-fast: startup throws a runtime exception if
 
 If `PHRAME_CONTAINER` is not set, factory behavior is automatic: prefer bridge containers discovered by the factory and fall back to native container when no bridge implementation is available.
 
+## Routing Engine
+
+Core resolves route dispatch through a routing engine abstraction.
+
+Routing bridge support is available through the external `phramecms/routing-bridge` package.
+
+You can override routing engine selection with `PHRAME_ROUTING_ENGINE`:
+
+- `native`: force core native route matching.
+- `routing-bridge`: force preferred routing bridge discovery.
+- aliases `symfony-routing`, `symfony`, and `routing` are also supported for compatibility.
+- `Fully\\Qualified\\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\RoutingEngineInterface`.
+
+If `PHRAME_ROUTING_ENGINE` is not set, factory behavior is automatic: prefer bridge routing engines discovered by the factory and fall back to native routing when no bridge implementation is available.
+
 ## Symfony HttpFoundation Bridge
 
 Core remains framework-neutral at plugin boundaries. Symfony HttpFoundation support is provided by the external `phramecms/http-foundation-bridge` package and is installed as a core dependency.

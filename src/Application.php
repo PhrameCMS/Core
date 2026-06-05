@@ -6,6 +6,7 @@ namespace PhrameCMS\Core;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
 use PhrameCMS\Core\Contracts\RouteProviderInterface;
+use PhrameCMS\Core\Contracts\RoutingEngineInterface;
 use PhrameCMS\Core\Contracts\ServiceTag;
 use PhrameCMS\Core\Contracts\ServiceProviderInterface;
 use PhrameCMS\Core\Http\HttpMethod;
@@ -13,6 +14,7 @@ use PhrameCMS\Core\Http\Request;
 use PhrameCMS\Core\Http\Response;
 use PhrameCMS\Core\Plugin\PluginManager;
 use PhrameCMS\Core\Routing\Route;
+use PhrameCMS\Core\Routing\RoutingEngineFactory;
 use RuntimeException;
 
 final class Application
@@ -27,10 +29,13 @@ final class Application
      */
     private array $providers = [];
 
+    private readonly RoutingEngineInterface $routingEngine;
+
     public function __construct(
         private readonly ContainerBuilderInterface $container,
         private readonly PluginManager $pluginManager,
     ) {
+        $this->routingEngine = RoutingEngineFactory::createDefault();
     }
 
     public static function bootFromComposer(): self
@@ -70,12 +75,9 @@ final class Application
 
     public function handle(Request $request): Response
     {
-        foreach ($this->routes as $route) {
-            if (!$route->matches($request->method, $request->path)) {
-                continue;
-            }
-
-            return ($route->handler)($request, $this->container);
+        $response = $this->routingEngine->dispatch($request, $this->routes, $this->container);
+        if ($response !== null) {
+            return $response;
         }
 
         return Response::json([

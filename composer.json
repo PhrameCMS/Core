@@ -8,6 +8,7 @@
     "phramecms/dependency-injection-bridge": "dev-main",
     "phramecms/dotenv-bridge": "dev-main",
     "phramecms/http-foundation-bridge": "dev-main",
+    "phramecms/routing-bridge": "dev-main",
     "psr/container": "^2.0"
   },
   "autoload": {
@@ -22,6 +23,10 @@
       "options": {
         "symlink": true
       }
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/PhrameCMS/routing-bridge"
     },
     {
       "type": "vcs",

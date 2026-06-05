@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "922ce9ef9563ba20563260f489e5b059",
+    "content-hash": "69e84388e664d4cb8804e50630bb9b3e",
     "packages": [
         {
             "name": "phramecms/dependency-injection-bridge",
@@ -128,6 +128,56 @@
                 "issues": "https://github.com/PhrameCMS/http-foundation-bridge/issues"
             },
             "time": "2026-06-05T14:38:01+00:00"
+        },
+        {
+            "name": "phramecms/routing-bridge",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhrameCMS/routing-bridge.git",
+                "reference": "a14167342dbb76dccedc308491920883ca4a3b99"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhrameCMS/routing-bridge/zipball/a14167342dbb76dccedc308491920883ca4a3b99",
+                "reference": "a14167342dbb76dccedc308491920883ca4a3b99",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2",
+                "phramecms/core": "dev-main",
+                "symfony/routing": "^7.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^12.5"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhrameCMS\\RoutingBridge\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PhrameCMS\\RoutingBridge\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ]
+            },
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "description": "Routing bridge for PhrameCMS Core",
+            "support": {
+                "source": "https://github.com/PhrameCMS/routing-bridge/tree/main",
+                "issues": "https://github.com/PhrameCMS/routing-bridge/issues"
+            },
+            "time": "2026-06-05T18:51:31+00:00"
         },
         {
             "name": "psr/container",
@@ -581,6 +631,91 @@
                 }
             ],
             "time": "2026-05-26T12:51:13+00:00"
+        },
+        {
+            "name": "symfony/routing",
+            "version": "v7.4.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/routing.git",
+                "reference": "3a162171bb008e5e0f15dce6581373a4c0e8390d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/3a162171bb008e5e0f15dce6581373a4c0e8390d",
+                "reference": "3a162171bb008e5e0f15dce6581373a4c0e8390d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2",
+                "symfony/deprecation-contracts": "^2.5|^3"
+            },
+            "conflict": {
+                "symfony/config": "<6.4",
+                "symfony/dependency-injection": "<6.4",
+                "symfony/yaml": "<6.4"
+            },
+            "require-dev": {
+                "psr/log": "^1|^2|^3",
+                "symfony/config": "^6.4|^7.0|^8.0",
+                "symfony/dependency-injection": "^6.4|^7.0|^8.0",
+                "symfony/expression-language": "^6.4|^7.0|^8.0",
+                "symfony/http-foundation": "^6.4|^7.0|^8.0",
+                "symfony/yaml": "^6.4|^7.0|^8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Routing\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Maps an HTTP request to a set of configuration variables",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "router",
+                "routing",
+                "uri",
+                "url"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/routing/tree/v7.4.13"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2026-05-24T11:20:33+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -2504,7 +2639,8 @@
     "stability-flags": {
         "phramecms/dependency-injection-bridge": 20,
         "phramecms/dotenv-bridge": 20,
-        "phramecms/http-foundation-bridge": 20
+        "phramecms/http-foundation-bridge": 20,
+        "phramecms/routing-bridge": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
