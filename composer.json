@@ -9,7 +9,8 @@
     "phramecms/dotenv-bridge": "dev-main",
     "phramecms/http-foundation-bridge": "dev-main",
     "phramecms/routing-bridge": "dev-main",
-    "psr/container": "^2.0"
+    "psr/container": "^2.0",
+    "phramecms/twig-bridge": "dev-main"
   },
   "autoload": {
     "psr-4": {
@@ -23,6 +24,14 @@
       "options": {
         "symlink": true
       }
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/PhrameCMS/controller-bridge"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/PhrameCMS/twig-bridge"
     },
     {
       "type": "vcs",

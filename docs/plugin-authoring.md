@@ -56,6 +56,60 @@ Route::create(HttpMethod::GET, '/plugins/example/status', static fn (): Response
 ]));
 ```
 
+## Controller Auto-Discovery (Manifest)
+
+In addition to tagged `RouteProviderInterface` services, packages can declare controller routes directly in
+`extra.phramecms.controllers`.
+
+```json
+{
+  "extra": {
+    "phramecms": {
+      "provider": "Vendor\\Package\\MyServiceProvider",
+      "controllers": [
+        {
+          "method": "GET",
+          "path": "/plugins/example/page",
+          "controller": "Vendor\\Package\\Controller\\PageController"
+        },
+        {
+          "method": "POST",
+          "path": "/plugins/example/save",
+          "controller": "Vendor\\Package\\Controller\\PageController::save"
+        }
+      ]
+    }
+  }
+}
+```
+
+Supported controller references:
+
+- Invokable controller class (`__invoke`)
+- `ClassName::methodName`
+
+Controller actions must return `PhrameCMS\\Core\\Http\\Response`.
+
+## Twig Rendering (Optional)
+
+When `phramecms/twig-bridge` is installed, Core registers `PhrameCMS\\Core\\Contracts\\TemplateRendererInterface`
+automatically.
+
+```php
+use PhrameCMS\Core\Contracts\TemplateRendererInterface;
+use PhrameCMS\Core\Http\Response;
+
+$container->set(MyPageController::class, static function ($container): MyPageController {
+  /** @var TemplateRendererInterface $renderer */
+  $renderer = $container->get(TemplateRendererInterface::class);
+
+  return new MyPageController($renderer);
+});
+
+// In controller action:
+return Response::html($this->renderer->render('plugin/page.html.twig', ['title' => 'Example']));
+```
+
 ## Capability Reporting
 
 Declare capability strings in `extra.phramecms.capabilities`.

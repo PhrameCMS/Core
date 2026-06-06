@@ -11,6 +11,7 @@ final class ContainerEngineTest extends TestCase
     {
         self::assertSame(ContainerEngine::Native, ContainerEngine::fromConfiguration(' native '));
         self::assertSame(ContainerEngine::DependencyInjection, ContainerEngine::fromConfiguration('dependency-injection'));
+        self::assertSame(ContainerEngine::DependencyInjection, ContainerEngine::fromConfiguration('dependency-injection-bridge'));
         self::assertSame(ContainerEngine::DependencyInjection, ContainerEngine::fromConfiguration('symfony'));
         self::assertSame(ContainerEngine::DependencyInjection, ContainerEngine::fromConfiguration('symfony-di'));
         self::assertNull(ContainerEngine::fromConfiguration('unknown'));

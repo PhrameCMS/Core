@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace PhrameCMS\Core;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
+use PhrameCMS\Core\Contracts\ControllerResolverInterface;
 use PhrameCMS\Core\Contracts\RouteProviderInterface;
 use PhrameCMS\Core\Contracts\RoutingEngineInterface;
 use PhrameCMS\Core\Contracts\ServiceTag;
 use PhrameCMS\Core\Contracts\ServiceProviderInterface;
+use PhrameCMS\Core\Contracts\TemplateRendererInterface;
+use PhrameCMS\Core\Controller\ControllerResolverFactory;
 use PhrameCMS\Core\Http\HttpMethod;
 use PhrameCMS\Core\Http\Request;
 use PhrameCMS\Core\Http\Response;
 use PhrameCMS\Core\Plugin\PluginManager;
+use PhrameCMS\Core\Plugin\PluginDefinition;
 use PhrameCMS\Core\Routing\Route;
 use PhrameCMS\Core\Routing\RoutingEngineFactory;
+use PhrameCMS\Core\Template\TemplateRendererFactory;
 use RuntimeException;
 
 final class Application
@@ -30,12 +35,14 @@ final class Application
     private array $providers = [];
 
     private readonly RoutingEngineInterface $routingEngine;
+    private readonly ControllerResolverInterface $controllerResolver;
 
     public function __construct(
         private readonly ContainerBuilderInterface $container,
         private readonly PluginManager $pluginManager,
     ) {
         $this->routingEngine = RoutingEngineFactory::createDefault();
+        $this->controllerResolver = ControllerResolverFactory::createDefault();
     }
 
     public static function bootFromComposer(): self
@@ -67,6 +74,7 @@ final class Application
         }
 
         $this->collectPluginRoutes();
+        $this->collectManifestControllerRoutes($plugins);
 
         foreach ($this->providers as $provider) {
             $provider->boot($this->container);
@@ -89,12 +97,19 @@ final class Application
     private function registerCoreServices(): void
     {
         $this->container->set(CapabilityRegistry::class, static fn (): CapabilityRegistry => new CapabilityRegistry());
+        $this->container->set(ControllerResolverInterface::class, $this->controllerResolver);
+
+        $templateRenderer = TemplateRendererFactory::createDefault();
+        if ($templateRenderer !== null) {
+            $this->container->set(TemplateRendererInterface::class, $templateRenderer);
+        }
+
         $this->container->set('core.version', '0.1.0-dev');
     }
 
     private function registerCoreRoutes(): void
     {
-        $this->routes[] = Route::create(HttpMethod::GET, '/health', function (): Response {
+        $this->addRoute(Route::create(HttpMethod::GET, '/health', function (): Response {
             $version = $this->container->get('core.version');
             if (!is_string($version)) {
                 throw new RuntimeException('Core version must be a string.');
@@ -105,16 +120,16 @@ final class Application
                 'service' => 'phramecms-core',
                 'version' => $version,
             ]);
-        });
+        }));
 
-        $this->routes[] = Route::create(HttpMethod::GET, '/capabilities', function (): Response {
+        $this->addRoute(Route::create(HttpMethod::GET, '/capabilities', function (): Response {
             /** @var CapabilityRegistry $capabilities */
             $capabilities = $this->container->get(CapabilityRegistry::class);
 
             return Response::json([
                 'capabilities' => $capabilities->all(),
             ]);
-        });
+        }));
     }
 
     private function collectPluginRoutes(): void
@@ -132,9 +147,39 @@ final class Application
             }
 
             foreach ($provider->routes() as $route) {
-                $this->routes[] = $route;
+                $this->addRoute($route);
             }
         }
+    }
+
+    /**
+     * @param array<int, PluginDefinition> $plugins
+     */
+    private function collectManifestControllerRoutes(array $plugins): void
+    {
+        foreach ($plugins as $plugin) {
+            foreach ($plugin->controllers as $controllerRoute) {
+                $handler = $this->controllerResolver->resolve($controllerRoute->controller, $this->container);
+                $route = Route::create($controllerRoute->method, $controllerRoute->path, $handler);
+
+                $this->addRoute($route);
+            }
+        }
+    }
+
+    private function addRoute(Route $route): void
+    {
+        foreach ($this->routes as $existingRoute) {
+            if ($existingRoute->method === $route->method && $existingRoute->path === $route->path) {
+                throw new RuntimeException(sprintf(
+                    'Duplicate route definition for %s %s.',
+                    $route->method->value,
+                    $route->path,
+                ));
+            }
+        }
+
+        $this->routes[] = $route;
     }
 
     private function resolveProvider(string $providerClass): ServiceProviderInterface

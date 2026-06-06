@@ -19,6 +19,7 @@ enum ContainerEngine: string
 
         if (
             $normalized === self::DependencyInjection->value
+            || $normalized === 'dependency-injection-bridge'
             || $normalized === 'symfony'
             || $normalized === 'symfony-di'
         ) {

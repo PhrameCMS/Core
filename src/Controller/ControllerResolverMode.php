@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PhrameCMS\Core\Http;
+namespace PhrameCMS\Core\Controller;
 
-enum HttpTransportMode: string
+enum ControllerResolverMode: string
 {
     case Native = 'native';
     case Bridge = 'bridge';
@@ -19,10 +19,7 @@ enum HttpTransportMode: string
 
         if (
             $normalized === self::Bridge->value
-            || $normalized === 'http-foundation-bridge'
-            || $normalized === 'symfony'
-            || $normalized === 'httpfoundation'
-            || $normalized === 'http-foundation'
+            || $normalized === 'controller-bridge'
         ) {
             return self::Bridge;
         }

@@ -9,11 +9,13 @@ final class PluginDefinition
     /**
      * @param array<int, string> $providers
      * @param array<int, string> $capabilities
+     * @param array<int, ControllerRouteDefinition> $controllers
      */
     public function __construct(
         public readonly string $package,
         public readonly array $providers,
         public readonly array $capabilities,
+        public readonly array $controllers = [],
     ) {
     }
 }
