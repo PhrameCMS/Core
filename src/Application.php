@@ -6,12 +6,14 @@ namespace PhrameCMS\Core;
 
 use PhrameCMS\Core\Contracts\ContainerBuilderInterface;
 use PhrameCMS\Core\Contracts\ControllerResolverInterface;
+use PhrameCMS\Core\Contracts\DatabaseAdapterInterface;
 use PhrameCMS\Core\Contracts\RouteProviderInterface;
 use PhrameCMS\Core\Contracts\RoutingEngineInterface;
 use PhrameCMS\Core\Contracts\ServiceTag;
 use PhrameCMS\Core\Contracts\ServiceProviderInterface;
 use PhrameCMS\Core\Contracts\TemplateRendererInterface;
 use PhrameCMS\Core\Controller\ControllerResolverFactory;
+use PhrameCMS\Core\Database\DatabaseFactory;
 use PhrameCMS\Core\Http\HttpMethod;
 use PhrameCMS\Core\Http\Request;
 use PhrameCMS\Core\Http\Response;
@@ -102,6 +104,11 @@ final class Application
         $templateRenderer = TemplateRendererFactory::createDefault();
         if ($templateRenderer !== null) {
             $this->container->set(TemplateRendererInterface::class, $templateRenderer);
+        }
+
+        $databaseAdapter = DatabaseFactory::createDefault();
+        if ($databaseAdapter !== null) {
+            $this->container->set(DatabaseAdapterInterface::class, $databaseAdapter);
         }
 
         $this->container->set('core.version', '0.1.0-dev');

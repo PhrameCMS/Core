@@ -147,3 +147,25 @@ You can override bridge selection with `PHRAME_DOTENV_BRIDGE`:
 If `PHRAME_DOTENV_BRIDGE` is not set, core attempts to use the default `phramecms/dotenv-bridge` package class when available.
 
 Existing process-level environment variables take precedence over `.env` values.
+
+## Database Adapter
+
+Core resolves database access through `PhrameCMS\Core\Contracts\DatabaseAdapterInterface`.
+
+Doctrine DBAL support is provided by the external `phramecms/doctrine-dbal-bridge` package.
+
+You can override database adapter selection with `PHRAME_DATABASE`:
+
+- `none`: disable database adapter registration.
+- `native` and `off`: aliases for `none`.
+- `bridge`: use preferred bridge discovery.
+- `doctrine`, `dbal`, and `doctrine-dbal-bridge`: aliases for bridge mode.
+- `Fully\Qualified\ClassName`: instantiate a custom class that implements `PhrameCMS\Core\Contracts\DatabaseAdapterInterface`.
+
+If `PHRAME_DATABASE` is not set, factory behavior is automatic: prefer the Doctrine bridge when available, and leave the database adapter unregistered when no bridge implementation is available.
+
+The Doctrine bridge reads common connection settings from environment variables:
+
+- `DB_DRIVER` (defaults to `pdo_sqlite`)
+- `DB_PATH` (used by sqlite; defaults to `:memory:`)
+- `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` (used by networked drivers)

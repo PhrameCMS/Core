@@ -6,6 +6,7 @@
   "require": {
     "php": "^8.2",
     "phramecms/dependency-injection-bridge": "dev-main",
+    "phramecms/doctrine-dbal-bridge": "dev-main",
     "phramecms/dotenv-bridge": "dev-main",
     "phramecms/http-foundation-bridge": "dev-main",
     "phramecms/routing-bridge": "dev-main",
@@ -26,6 +27,13 @@
       }
     },
     {
+      "type": "path",
+      "url": "../doctrine-dbal-bridge",
+      "options": {
+        "symlink": true
+      }
+    },
+    {
       "type": "vcs",
       "url": "https://github.com/PhrameCMS/controller-bridge"
     },
@@ -40,6 +48,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/PhrameCMS/dependency-injection-bridge"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/PhrameCMS/doctrine-dbal-bridge"
     },
     {
       "type": "vcs",

@@ -116,6 +116,58 @@ Declare capability strings in `extra.phramecms.capabilities`.
 
 These strings are exposed by `GET /capabilities` so clients can detect available features dynamically.
 
+## Database Access (Optional)
+
+When `phramecms/doctrine-dbal-bridge` is installed and enabled, Core registers
+`PhrameCMS\Core\Contracts\DatabaseAdapterInterface` automatically.
+
+```php
+use PhrameCMS\Core\Contracts\DatabaseAdapterInterface;
+
+$container->set(MyRepository::class, static function ($container): MyRepository {
+  /** @var DatabaseAdapterInterface $db */
+  $db = $container->get(DatabaseAdapterInterface::class);
+
+  return new MyRepository($db);
+});
+```
+
+If database support is optional in your plugin, check `has(DatabaseAdapterInterface::class)` before resolving it.
+
+Example repository helper:
+
+```php
+use PhrameCMS\Core\Contracts\DatabaseAdapterInterface;
+
+final class MyRepository
+{
+  public function __construct(private readonly DatabaseAdapterInterface $db)
+  {
+  }
+
+  /**
+   * @return array<int, array<string, mixed>>
+   */
+  public function listPublishedPages(): array
+  {
+    return $this->db->fetchAll(
+      'SELECT id, slug, title FROM pages WHERE published = :published ORDER BY id DESC',
+      ['published' => 1],
+    );
+  }
+
+  public function renamePage(int $id, string $title): bool
+  {
+    $affected = $this->db->execute(
+      'UPDATE pages SET title = ? WHERE id = ?',
+      [$title, $id],
+    );
+
+    return $affected > 0;
+  }
+}
+```
+
 ## Compatibility Guidance
 
 - Treat provider class names and behavior as part of your public plugin API.
